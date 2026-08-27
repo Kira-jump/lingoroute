@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" rx="36" fill="#1F2A44"/>
+  <circle cx="100" cy="100" r="72" fill="none" stroke="#C1432D" stroke-width="6" stroke-dasharray="4 8"/>
+  <text x="100" y="92" font-family="Georgia, serif" font-size="56" font-weight="700" fill="#F2E8D5" text-anchor="middle">LR</text>
+  <text x="100" y="122" font-family="Georgia, serif" font-size="16" letter-spacing="3" fill="#C9A227" text-anchor="middle">ROUTE</text>
+</svg>
