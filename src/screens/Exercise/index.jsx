@@ -53,15 +53,8 @@ export default function Exercise() {
     return shuffle(q.words)
   }, [step])
 
-  useEffect(() => {
-    if (heartsState.hearts <= 0 && !finished) {
-      navigate('/home')
-    }
-  }, [heartsState.hearts, finished])
-
-  if (heartsState.hearts <= 0 && !finished) {
-    return null
-  }
+  const effectiveHearts = Math.max(0, heartsState.hearts - mistakes)
+  const outOfHearts = effectiveHearts <= 0 && !finished
 
   function isCorrect() {
     if (q.type === 'qcm') return selected === q.answer
@@ -71,7 +64,7 @@ export default function Exercise() {
   }
 
   async function handleCheck() {
-    if (checked || checking) return
+    if (checked || checking || outOfHearts) return
     setChecking(true)
     const ok = isCorrect()
     if (ok) {
@@ -158,6 +151,18 @@ export default function Exercise() {
       <RewardChest
         reward={chestReward}
         onClose={() => setChestReward(null)}
+      />
+    )
+  }
+
+  if (outOfHearts) {
+    return (
+      <HeartsShopModal
+        uid={user.uid}
+        profile={profile}
+        countdown={formatCountdown(heartsState.msUntilNext)}
+        onProfileUpdate={setProfile}
+        onClose={() => navigate('/home')}
       />
     )
   }

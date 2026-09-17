@@ -1,3 +1,6 @@
+import { doc, updateDoc } from 'firebase/firestore'
+import { db } from './firebase'
+
 export const HEART_REGEN_MS = 15 * 60 * 1000 // 15 minutes par cœur
 
 export function computeEffectiveHearts(hearts, heartsUpdatedAt) {
@@ -30,4 +33,24 @@ export function formatCountdown(ms) {
   const m = String(Math.floor(totalSec / 60)).padStart(2, '0')
   const s = String(totalSec % 60).padStart(2, '0')
   return `${m}:${s}`
+}
+
+
+export const HEART_PRICE_GEMS = 25
+
+export async function buyHeartWithGems(uid, profile) {
+  const gems = profile.gems ?? 0
+  if (gems < HEART_PRICE_GEMS) return { success: false, profile }
+  const hearts = Math.min(5, (profile.hearts ?? 0) + 1)
+  const newGems = gems - HEART_PRICE_GEMS
+  const heartsUpdatedAt = hearts >= 5 ? null : profile.heartsUpdatedAt ?? null
+  await updateDoc(doc(db, 'users', uid), { hearts, gems: newGems, heartsUpdatedAt })
+  return { success: true, profile: { ...profile, hearts, gems: newGems, heartsUpdatedAt } }
+}
+
+export async function grantHeartFromAd(uid, profile) {
+  const hearts = Math.min(5, (profile.hearts ?? 0) + 1)
+  const heartsUpdatedAt = hearts >= 5 ? null : profile.heartsUpdatedAt ?? null
+  await updateDoc(doc(db, 'users', uid), { hearts, heartsUpdatedAt })
+  return { ...profile, hearts, heartsUpdatedAt }
 }

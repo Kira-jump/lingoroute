@@ -6,7 +6,7 @@ import Hearts from '../../components/Hearts'
 import XPBar from '../../components/XPBar'
 import LessonNode from '../../components/LessonCard'
 import BottomNav from '../../components/BottomNav'
-import HeartsModal from '../../components/HeartsModal'
+import HeartsShopModal from '../../components/HeartsShopModal'
 import AppIcon from '../../utils/icons'
 import Mascot from '../../components/Mascot'
 import { useHeartsTimer } from '../../hooks/useHeartsTimer'
@@ -184,8 +184,11 @@ export default function Home() {
       </div>
 
       {showHeartsModal && (
-        <HeartsModal
+        <HeartsShopModal
+          uid={user.uid}
+          profile={profile}
           countdown={formatCountdown(heartsState.msUntilNext)}
+          onProfileUpdate={setProfile}
           onClose={() => setShowHeartsModal(false)}
         />
       )}
