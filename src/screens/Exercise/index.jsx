@@ -14,6 +14,8 @@ import ComboIndicator from '../../components/ComboIndicator'
 import Hearts from '../../components/Hearts'
 import Mascot from '../../components/Mascot'
 import { isAnswerCorrect } from '../../utils/answerCheck'
+import HeartsShopModal from '../../components/HeartsShopModal'
+import { formatCountdown } from '../../services/hearts'
 
 function shuffle(arr) {
   const a = [...arr]
