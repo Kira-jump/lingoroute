@@ -15,7 +15,7 @@ import Hearts from '../../components/Hearts'
 import Mascot from '../../components/Mascot'
 import { isAnswerCorrect } from '../../utils/answerCheck'
 import HeartsShopModal from '../../components/HeartsShopModal'
-import { formatCountdown } from '../../services/hearts'
+import { formatCountdown, syncHeartsDepleted } from '../../services/hearts'
 
 function shuffle(arr) {
   const a = [...arr]
@@ -57,6 +57,12 @@ export default function Exercise() {
 
   const effectiveHearts = Math.max(0, heartsState.hearts - mistakes)
   const outOfHearts = effectiveHearts <= 0 && !finished
+
+  useEffect(() => {
+    if (outOfHearts && user) {
+      syncHeartsDepleted(user.uid, profile).then((updated) => setProfile(updated))
+    }
+  }, [outOfHearts])
 
   function isCorrect() {
     if (q.type === 'qcm') return selected === q.answer
