@@ -51,6 +51,12 @@ export default function Profile() {
           </div>
           <div className="font-display text-xl text-slate-100 mt-3">{profile.name}</div>
           <div className="text-amber-400 text-sm font-mono">Niveau {level}</div>
+          <button
+            className="mt-3 text-xs bg-amber-400/15 text-amber-400 rounded-lg px-3 py-1.5"
+            onClick={() => window.location.assign('/mascot-shop')}
+          >
+            🎩 Boutique du hamster
+          </button>
         </div>
 
         <div className="mt-5">

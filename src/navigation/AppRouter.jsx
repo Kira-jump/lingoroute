@@ -10,6 +10,7 @@ import Review from '../screens/Review'
 import Profile from '../screens/Profile'
 import Leaderboard from '../screens/Leaderboard'
 import Shop from '../screens/Shop'
+import MascotShop from '../screens/MascotShop'
 import Splash from '../screens/Splash'
 
 function PublicOnlyRoute({ children }) {
@@ -27,6 +28,7 @@ export default function AppRouter() {
         <Route path="/register" element={<PublicOnlyRoute><Register /></PublicOnlyRoute>} />
         <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/books" element={<ProtectedRoute><Shop /></ProtectedRoute>} />
+        <Route path="/mascot-shop" element={<ProtectedRoute><MascotShop /></ProtectedRoute>} />
         <Route path="/lesson/:lessonId" element={<ProtectedRoute><Lesson /></ProtectedRoute>} />
         <Route path="/exercise/:lessonId" element={<ProtectedRoute><Exercise /></ProtectedRoute>} />
         <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />

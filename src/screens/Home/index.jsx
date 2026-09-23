@@ -83,7 +83,7 @@ export default function Home() {
       <div className="max-w-md mx-auto px-5 pt-8">
         <div className="flex items-center justify-between animate-fadeInUp">
           <div className="flex items-center gap-3">
-            <Mascot mood="idle" variant="dad" size={52} />
+            <Mascot mood="idle" variant="dad" accessory={profile.equippedAccessory} size={52} />
             <div>
               <div className="font-display text-xl text-slate-100">
                 Bonjour {profile.name}
