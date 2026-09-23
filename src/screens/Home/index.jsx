@@ -161,6 +161,16 @@ export default function Home() {
                     ))
                   )}
                 </div>
+
+                {completedLessons.includes(unit.boss.id) && (
+                  <button
+                    className="w-full glass-card p-3.5 mt-3 flex items-center gap-3 border border-amber-400/20 animate-fadeInUp"
+                    onClick={() => navigate(`/story/${unit.id}`)}
+                  >
+                    <AppIcon name="BookOpen" className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                    <span className="text-slate-100 text-sm font-medium">Lire l'histoire de cette unité</span>
+                  </button>
+                )}
               </div>
             )
           })}
