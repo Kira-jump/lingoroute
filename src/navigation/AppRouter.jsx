@@ -8,6 +8,7 @@ import Lesson from '../screens/Lesson'
 import Exercise from '../screens/Exercise'
 import Review from '../screens/Review'
 import Story from '../screens/Story'
+import Reading from '../screens/Reading'
 import Profile from '../screens/Profile'
 import Leaderboard from '../screens/Leaderboard'
 import Shop from '../screens/Shop'
@@ -34,6 +35,7 @@ export default function AppRouter() {
         <Route path="/exercise/:lessonId" element={<ProtectedRoute><Exercise /></ProtectedRoute>} />
         <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />
         <Route path="/story/:unitId" element={<ProtectedRoute><Story /></ProtectedRoute>} />
+        <Route path="/reading" element={<ProtectedRoute><Reading /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/login" replace />} />

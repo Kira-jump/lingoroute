@@ -7,6 +7,7 @@ import BottomNav from '../../components/BottomNav'
 
 export default function Shop() {
   const { user, profile } = useAuth()
+  const isAdmin = user?.uid === 'awgJ9QUC8UR8O5Tq3crDa8dEaOL2'
   const [books, setBooks] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [title, setTitle] = useState('')
@@ -48,12 +49,14 @@ export default function Shop() {
       <div className="max-w-md mx-auto px-5 pt-8">
         <div className="flex items-center justify-between animate-fadeInUp">
           <div className="font-display text-xl text-slate-100"><span className="inline-flex items-center gap-2"><BookOpen className="w-5 h-5 text-amber-400" /> Mes livres</span></div>
-          <button
-            className="text-amber-400 text-sm font-mono border border-amber-400/40 rounded-xl px-3 py-1.5"
-            onClick={() => setShowForm((v) => !v)}
-          >
-            {showForm ? 'Annuler' : '+ Vendre'}
-          </button>
+          {isAdmin && (
+            <button
+              className="text-amber-400 text-sm font-mono border border-amber-400/40 rounded-xl px-3 py-1.5"
+              onClick={() => setShowForm((v) => !v)}
+            >
+              {showForm ? 'Annuler' : '+ Vendre'}
+            </button>
+          )}
         </div>
 
         {showForm && (

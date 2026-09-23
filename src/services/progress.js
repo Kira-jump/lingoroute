@@ -2,6 +2,7 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from './firebase'
 import { computeEffectiveHearts } from './hearts'
 import { xpProgress } from '../utils/xp'
+import { syncLeaderboardEntry } from './leaderboard'
 
 export async function syncHearts(uid, profile) {
   const synced = computeEffectiveHearts(profile.hearts ?? 5, profile.heartsUpdatedAt ?? null)
@@ -31,7 +32,11 @@ export async function applyLessonResult(uid, profile, lessonId, correctCount, to
     ? profile.completedLessons
     : [...(profile.completedLessons || []), lessonId]
 
-  const updates = { xp: totalXp, level, hearts, heartsUpdatedAt, completedLessons }
+  const weeklyXp = (profile.weeklyXp ?? 0) + earnedXp
+
+  const updates = { xp: totalXp, level, hearts, heartsUpdatedAt, completedLessons, weeklyXp }
   await updateDoc(doc(db, 'users', uid), updates)
-  return { ...profile, ...updates, earnedXp }
+  const finalProfile = { ...profile, ...updates, earnedXp }
+  syncLeaderboardEntry(uid, finalProfile)
+  return finalProfile
 }
