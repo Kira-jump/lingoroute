@@ -36,7 +36,7 @@ export function formatCountdown(ms) {
 }
 
 
-export const HEART_PRICE_GEMS = 25
+export const HEART_PRICE_GEMS = 69
 
 export async function buyHeartWithGems(uid, profile) {
   const gems = profile.gems ?? 0
