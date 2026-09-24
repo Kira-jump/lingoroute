@@ -4,7 +4,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  updateProfile
+  updateProfile,
+  sendPasswordResetEmail
 } from 'firebase/auth'
 import { doc, setDoc, getDoc } from 'firebase/firestore'
 import { auth, db } from '../services/firebase'
@@ -58,8 +59,12 @@ export function AuthProvider({ children }) {
     await signOut(auth)
   }
 
+  async function resetPassword(email) {
+    await sendPasswordResetEmail(auth, email)
+  }
+
   return (
-    <AuthContext.Provider value={{ user, profile, setProfile, loading, register, login, logout }}>
+    <AuthContext.Provider value={{ user, profile, setProfile, loading, register, login, logout, resetPassword }}>
       {children}
     </AuthContext.Provider>
   )

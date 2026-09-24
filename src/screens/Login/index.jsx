@@ -55,6 +55,12 @@ export default function Login() {
             {loading ? 'Connexion...' : 'Se connecter'}
           </button>
         </form>
+
+        <div className="text-center text-sm mt-4">
+          <Link to="/forgot-password" className="text-slate-400">
+            Mot de passe oublié ?
+          </Link>
+        </div>
         <div className="text-center text-sm text-slate-400 mt-5">
           Pas encore de compte ?{' '}
           <Link to="/register" className="text-amber-400 font-medium">
