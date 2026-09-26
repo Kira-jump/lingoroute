@@ -7,7 +7,7 @@ import BottomNav from '../../components/BottomNav'
 
 export default function Shop() {
   const { user, profile } = useAuth()
-  const isAdmin = user?.uid === 'awgJ9QUC8UR8O5Tq3crDa8dEaOL2'
+  const isAdmin = user?.uid === 'h1bkFHh0naNFZwI7D5xCv912En22'
   const [books, setBooks] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [title, setTitle] = useState('')
