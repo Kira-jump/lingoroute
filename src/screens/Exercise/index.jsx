@@ -14,6 +14,9 @@ import ComboIndicator from '../../components/ComboIndicator'
 import Hearts from '../../components/Hearts'
 import Mascot from '../../components/Mascot'
 import { isAnswerCorrect } from '../../utils/answerCheck'
+import { Volume2 } from 'lucide-react'
+import { speakEnglish, isSpeechSupported } from '../../services/speak'
+import { looksEnglish, speakableText } from '../../utils/language'
 import HeartsShopModal from '../../components/HeartsShopModal'
 import { formatCountdown, syncHeartsDepleted } from '../../services/hearts'
 
@@ -175,6 +178,11 @@ export default function Exercise() {
     )
   }
 
+  const canListen =
+    isSpeechSupported() &&
+    typeof q.answer === 'string' &&
+    (q.type === 'drag' || q.type === 'fill' || looksEnglish(q.answer))
+
   const usedIndexes = new Set()
 
   return (
@@ -293,6 +301,15 @@ export default function Exercise() {
             <div className={`text-sm font-mono ${isCorrect() ? 'text-emerald-400' : 'text-red-400'}`}>
               {isCorrect() ? '✓ Correct !' : `✕ Réponse : ${q.answer}`}
             </div>
+            {canListen && (
+              <button
+                className="ml-auto w-10 h-10 rounded-full bg-amber-400/15 flex items-center justify-center flex-shrink-0 active:scale-90 transition"
+                onClick={() => speakEnglish(speakableText(q))}
+                aria-label="Écouter la réponse"
+              >
+                <Volume2 className="w-5 h-5 text-amber-400" />
+              </button>
+            )}
           </div>
         )}
       </div>
