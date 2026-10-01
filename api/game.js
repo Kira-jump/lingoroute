@@ -11,6 +11,8 @@ const ACCESSORY_PRICES = { glasses: 20, hat: 35, bandana: 25, crown: 60 }
 const DAILY = 15, LONG7 = 50, LONG10 = 80, CHEST = 10
 const HEART_PRICE = 69, READING_PRICE = 100
 const CHEST_COOLDOWN_MS = 20000
+const STORY_XP = 20, STORY_GEMS = 10
+const STORY_FINAL_XP = 30, STORY_FINAL_GEMS = 20
 
 function fail(status, error) {
   const e = new Error(error)
@@ -27,7 +29,7 @@ function compute(action, p, body) {
       return { dailyClaimed: true, gems: gems + DAILY, longDays: (p.longDays ?? 0) + 1 }
     case 'claimLong7':
       if (p.long7Claimed) fail(400, 'already_claimed')
-      if ((p.longDays ?? 0) < 7) fail(400, 'not_ready')
+      if ((p.streak ?? 0) < 7) fail(400, 'not_ready')
       return { long7Claimed: true, gems: gems + LONG7 }
     case 'claimLong10':
       if (p.long10Claimed) fail(400, 'already_claimed')
@@ -37,6 +39,16 @@ function compute(action, p, body) {
       const now = Date.now()
       if (now - (p.lastChestAt ?? 0) < CHEST_COOLDOWN_MS) fail(429, 'too_fast')
       return { gems: gems + CHEST, lastChestAt: now }
+    }
+    case 'readStory': {
+      const id = String(body.unitId || '')
+      const m = /^u(\d{1,2})$/.exec(id)
+      const n = m ? Number(m[1]) : 0
+      if (n < 1 || n > 20) fail(400, 'unknown_story')
+      if (!(p.completedLessons || []).includes('b' + n)) fail(400, 'not_ready')
+      const read = p.readStories || []
+      if (read.includes(id)) fail(400, 'already_read')
+      return { readStories: [...read, id], xp: (p.xp ?? 0) + (n === 20 ? STORY_FINAL_XP : STORY_XP), gems: gems + (n === 20 ? STORY_FINAL_GEMS : STORY_GEMS) }
     }
     case 'buyAccessory': {
       const price = ACCESSORY_PRICES[body.accessoryId]
