@@ -10,6 +10,7 @@ export default defineConfig({
       manifest: false,
       includeAssets: ['icon.svg', 'icon-192.png', 'icon-512.png'],
       workbox: {
+        mode: 'development',
         globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/api\//]
