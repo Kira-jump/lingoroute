@@ -89,6 +89,7 @@ export default async function handler(req, res) {
     })
     return res.status(200).json({ ok: true, updates })
   } catch (e) {
+    if (!e.status) console.error('GAME_API_ERROR', e && e.code, e && e.message)
     return res.status(e.status || 500).json({ ok: false, error: e.status ? e.message : 'server_error' })
   }
 }
