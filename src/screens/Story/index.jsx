@@ -15,6 +15,7 @@ export default function Story() {
 
   const [panel, setPanel] = useState(0)
   const [finished, setFinished] = useState(false)
+  const [rewarded, setRewarded] = useState(false)
 
   if (!story) {
     navigate('/home', { replace: true })
@@ -32,6 +33,7 @@ export default function Story() {
         try {
           const updates = await callGame('readStory', { unitId })
           setProfile((prev) => ({ ...prev, ...updates }))
+          setRewarded(true)
           playComplete()
           fireConfetti()
         } catch (e) {}
@@ -46,9 +48,13 @@ export default function Story() {
         <div className="glass-card p-8 text-center max-w-md w-full animate-popIn">
           <Mascot mood="excited" size={90} className="mx-auto mb-3" />
           <div className="font-display text-2xl text-slate-100 mb-2">Histoire terminée !</div>
-          <div className="text-amber-400 font-mono text-sm mb-6">
-            +{story.rewardXp} XP · +{story.rewardGems} 🌰
-          </div>
+          {rewarded ? (
+            <div className="text-amber-400 font-mono text-sm mb-6">
+              +{story.rewardXp} XP · +{story.rewardGems} 🌰
+            </div>
+          ) : (
+            <div className="text-slate-400 text-sm mb-6">Histoire déjà lue, pas de récompense cette fois.</div>
+          )}
           <button className="btn-primary" onClick={() => navigate('/home')}>
             Retour à l'accueil
           </button>
