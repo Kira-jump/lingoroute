@@ -1,5 +1,6 @@
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from './firebase'
+import { callGame } from './api'
 
 const DAILY_REWARD_GEMS = 15
 const LONG7_REWARD_GEMS = 50
@@ -83,25 +84,30 @@ export async function recordLessonForDaily(uid, profile, { correctCount, mistake
 }
 
 export async function claimDailyReward(uid, profile) {
-  const gems = (profile.gems ?? 0) + DAILY_REWARD_GEMS
-  const longDays = (profile.longDays ?? 0) + 1
-  const updates = { dailyClaimed: true, gems, longDays }
-  await updateDoc(doc(db, 'users', uid), updates)
-  return { ...profile, ...updates }
+  try {
+    const updates = await callGame('claimDaily')
+    return { ...profile, ...updates }
+  } catch (e) {
+    return profile
+  }
 }
 
 export async function claimLong7Reward(uid, profile) {
-  const gems = (profile.gems ?? 0) + LONG7_REWARD_GEMS
-  const updates = { long7Claimed: true, gems }
-  await updateDoc(doc(db, 'users', uid), updates)
-  return { ...profile, ...updates }
+  try {
+    const updates = await callGame('claimLong7')
+    return { ...profile, ...updates }
+  } catch (e) {
+    return profile
+  }
 }
 
 export async function claimLong10Reward(uid, profile) {
-  const gems = (profile.gems ?? 0) + LONG10_REWARD_GEMS
-  const updates = { long10Claimed: true, gems }
-  await updateDoc(doc(db, 'users', uid), updates)
-  return { ...profile, ...updates }
+  try {
+    const updates = await callGame('claimLong10')
+    return { ...profile, ...updates }
+  } catch (e) {
+    return profile
+  }
 }
 
 export { DAILY_REWARD_GEMS, LONG7_REWARD_GEMS, LONG10_REWARD_GEMS }

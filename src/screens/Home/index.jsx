@@ -45,7 +45,7 @@ export default function Home() {
         setProfile((prev) => ({ ...prev, streak: updated.streak, lastVisit: updated.lastVisit }))
       })
       syncDailyReset(user.uid, profile).then((updated) => {
-        setProfile((prev) => ({ ...prev, dailyDate: updated.dailyDate, dailyCount: updated.dailyCount, dailyClaimed: updated.dailyClaimed }))
+        setProfile((prev) => ({ ...prev, dailyDate: updated.dailyDate, dailyType: updated.dailyType, dailyTarget: updated.dailyTarget, dailyProgress: updated.dailyProgress, dailyClaimed: updated.dailyClaimed }))
       })
     }
   }, [user?.uid])
