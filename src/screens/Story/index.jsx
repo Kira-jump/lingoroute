@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getStory } from '../../database/stories'
 import { useAuth } from '../../context/AuthContext'
-import { doc, updateDoc } from 'firebase/firestore'
-import { db } from '../../services/firebase'
+import { callGame } from '../../services/api'
 import Mascot from '../../components/Mascot'
 import { playComplete } from '../../services/sounds'
 import { fireConfetti } from '../../services/confetti'
@@ -29,17 +28,13 @@ export default function Story() {
     if (panel + 1 < story.panels.length) {
       setPanel((p) => p + 1)
     } else {
-      const readStories = profile.readStories?.includes(unitId)
-        ? profile.readStories
-        : [...(profile.readStories || []), unitId]
-
       if (!profile.readStories?.includes(unitId)) {
-        const xp = (profile.xp ?? 0) + story.rewardXp
-        const gems = (profile.gems ?? 0) + story.rewardGems
-        await updateDoc(doc(db, 'users', user.uid), { readStories, xp, gems })
-        setProfile((prev) => ({ ...prev, readStories, xp, gems }))
-        playComplete()
-        fireConfetti()
+        try {
+          const updates = await callGame('readStory', { unitId })
+          setProfile((prev) => ({ ...prev, ...updates }))
+          playComplete()
+          fireConfetti()
+        } catch (e) {}
       }
       setFinished(true)
     }
