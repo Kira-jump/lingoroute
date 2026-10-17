@@ -1,5 +1,6 @@
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from './firebase'
+import { callGame } from './api'
 
 export const HEART_REGEN_MS = 15 * 60 * 1000 // 15 minutes par cœur
 
@@ -39,13 +40,12 @@ export function formatCountdown(ms) {
 export const HEART_PRICE_GEMS = 69
 
 export async function buyHeartWithGems(uid, profile) {
-  const gems = profile.gems ?? 0
-  if (gems < HEART_PRICE_GEMS) return { success: false, profile }
-  const hearts = Math.min(5, (profile.hearts ?? 0) + 1)
-  const newGems = gems - HEART_PRICE_GEMS
-  const heartsUpdatedAt = hearts >= 5 ? null : profile.heartsUpdatedAt ?? null
-  await updateDoc(doc(db, 'users', uid), { hearts, gems: newGems, heartsUpdatedAt })
-  return { success: true, profile: { ...profile, hearts, gems: newGems, heartsUpdatedAt } }
+  try {
+    const updates = await callGame('buyHeart')
+    return { success: true, profile: { ...profile, ...updates } }
+  } catch (e) {
+    return { success: false, profile }
+  }
 }
 
 export async function grantHeartFromAd(uid, profile) {
